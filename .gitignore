@@ -1,0 +1,21 @@
+*.class
+*.log
+
+environment-specific/
+
+# sbt specific
+.cache/
+.history/
+.lib/
+.idea/*
+
+logs/*
+
+dist/*
+target/
+
+.gitignore~
+
+
+conf/_not_used.jks
+#conf/idpmeta/*
