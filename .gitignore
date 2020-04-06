@@ -8,6 +8,7 @@ environment-specific/
 .history/
 .lib/
 .idea/*
+.vscode/*
 
 logs/*
 

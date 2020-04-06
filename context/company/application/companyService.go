@@ -30,14 +30,16 @@ func ProvideCompanyServiceImpl() *CompanyServiceImpl {
 /* ---- */
 
 func (csImpl *CompanyServiceImpl) CreateCompany(company *domain.Company) error {
-	// TODO
 	return csImpl.companyRepository.Insert(company)
 }
 
 func (csImpl *CompanyServiceImpl) FindAllCompanies() ([]domain.Company, error) {
-	companiesMock := []domain.Company{
-		{domain.Address{"street-1", "12", "02-744", "wawa", "PL",},100, "test-1", "tax-id-test"},
-		{domain.Address{}, 101, "test-2", "tax-id-test"},
-	}
-	return companiesMock, nil
+	// companiesMock := []domain.Company{
+	// 	{domain.Address{"street-1", "12", "02-744", "wawa", "PL"}, 100, "test-1", "tax-id-test", time.Now()},
+	// 	{domain.Address{}, 101, "test-2", "tax-id-test", time.Now()},
+	// }
+
+	companies, err := csImpl.companyRepository.FindAll()
+
+	return companies, err
 }

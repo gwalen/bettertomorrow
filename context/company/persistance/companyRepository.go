@@ -4,6 +4,8 @@ import (
 	"bettertomorrow/context/company/domain"
 	"bettertomorrow/common/db"
 	"sync"
+
+	"github.com/jinzhu/gorm"
 )
 
 type CompanyRepository interface {
@@ -11,7 +13,7 @@ type CompanyRepository interface {
 }
 
 type CompanyRepositoryImpl struct {
-	db *db.DbConnection
+	db *gorm.DB
 }
 
 /* -- singleton for DI -- */
@@ -21,7 +23,7 @@ var once sync.Once
 
 func ProvideCompanyRepositoryImpl() *CompanyRepositoryImpl {
 	once.Do(func() {
-		dbConnection := db.ProvideDbConnection()
+		dbConnection := db.DB()
 		companyRepositoryInstance = &CompanyRepositoryImpl{dbConnection }
 	})
 	return companyRepositoryInstance
@@ -30,7 +32,13 @@ func ProvideCompanyRepositoryImpl() *CompanyRepositoryImpl {
 /* ---- */
 
 func (crImpl *CompanyRepositoryImpl) Insert(company *domain.Company) error {
-	return nil
+	return db.DB().Create(company).Error
 }
 
-
+func (crImpl *CompanyRepositoryImpl) FindAll() ([]domain.Company, error) {
+	var companies []domain.Company
+	// TODO:
+	// err := db.DB().Find(companies).Error //interstingly error is reported in seversl different go routines althought there was just one call ?
+	err := db.DB().Find(&companies).Error  
+	return companies, err
+}

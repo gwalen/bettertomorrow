@@ -1,29 +1,64 @@
 package db
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+	
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+)
 
-type DbConnection struct {
-	port    int
-	address string
-	user    string
-	pass    string
+type DbConfig struct {
+	host   string
+	port   int
+	user   string
+	pass   string
+	dbName string
 }
 
 /* -- singleton for DI -- */
 
-var dbConnectionInstance *DbConnection
+var dbConfig *DbConfig
+var db *gorm.DB
 var once sync.Once
 
-func ProvideDbConnection() *DbConnection {
+func DB() *gorm.DB {
 	once.Do(func() {
-		dbConnectionInstance = &DbConnection{
-			port:    123,
-			address: "127.0.0.1",
-			user:    "gw",
-			pass:    "gw",
+		dbConfig = createDbConfig()
+		dbUrl := generateDbURL(dbConfig)
+		//TODO test onyly
+		fmt.Printf("dbUrl : %v \n", dbUrl)
+		dbCon, err := gorm.Open("mysql", generateDbURL(dbConfig))
+		if err != nil {
+			fmt.Errorf("error in connectDatabase(): %v", err)
 		}
+		db = dbCon
 	})
-	return dbConnectionInstance
+
+	return db
 }
 
 /* ---- */
+
+func createDbConfig() *DbConfig {
+	dbConfig = &DbConfig{
+		port:   3306,
+		host:   "127.0.0.1",
+		user:   "gw",
+		pass:   "gw",
+		dbName: "bettertomorrow",
+	}
+
+	return dbConfig
+}
+
+func generateDbURL(dbConfig *DbConfig) string {
+	return fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		dbConfig.user,
+		dbConfig.pass,
+		dbConfig.host,
+		dbConfig.port,
+		dbConfig.dbName,
+	)
+}
