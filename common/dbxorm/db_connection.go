@@ -1,11 +1,11 @@
-package db
+package dbxorm
 
 import (
 	"fmt"
 	"sync"
-	
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	"xorm.io/xorm"
 )
 
 type DbConfig struct {
@@ -19,26 +19,28 @@ type DbConfig struct {
 /* -- singleton for DI -- */
 
 var dbConfig *DbConfig
-var db *gorm.DB
+var db *xorm.Engine
 var once sync.Once
 
-func DB() *gorm.DB {
+func DB() *xorm.Engine {
 	once.Do(func() {
 		dbConfig = createDbConfig()
 		dbUrl := generateDbURL(dbConfig)
 		//TODO test onyly
 		fmt.Printf("dbUrl : %v \n", dbUrl)
-		dbCon, err := gorm.Open("mysql", generateDbURL(dbConfig))
+		dbCon, err := xorm.NewEngine("mysql", generateDbURL(dbConfig))
 		if err != nil {
-			fmt.Errorf("error in connectDatabase(): %v", err)
+			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
 		}
 		db = dbCon
+		db.ShowSQL(true)
 	})
 
 	return db
 }
 
 /* ---- */
+
 
 func createDbConfig() *DbConfig {
 	dbConfig = &DbConfig{

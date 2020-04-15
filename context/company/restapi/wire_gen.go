@@ -13,6 +13,13 @@ import (
 
 func NewCompanyRouter() (*CompanyRouter, error) {
 	companyServiceImpl := application.ProvideCompanyServiceImpl()
-	companyRouter := instantiateCompanyRouter(companyServiceImpl)
+	companyProductsServiceImpl := application.ProvideCompanyProductsServiceImpl()
+	companyRouter := instantiateCompanyRouter(companyServiceImpl, companyProductsServiceImpl)
 	return companyRouter, nil
+}
+
+func NewProductRouter() (*ProductRouter, error) {
+	productServiceImpl := application.ProvideProductServiceImpl()
+	productRouter := instantiateProductRouter(productServiceImpl)
+	return productRouter, nil
 }

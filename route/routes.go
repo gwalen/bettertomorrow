@@ -18,6 +18,7 @@ func Init() *echo.Echo {
 
 	addUtilRoutes(apiRoutes)
 	addCompanyRoutes(apiRoutes)
+	addProductRoutes(apiRoutes)
 
 	return echoServer
 }
@@ -30,6 +31,11 @@ func addUtilRoutes(apiRoutes *echo.Group) {
 
 func addCompanyRoutes(apiRoutes *echo.Group) {
 	router, _ := restapi.NewCompanyRouter()
+	router.AddRoutes(apiRoutes)
+}
+
+func addProductRoutes(apiRoutes *echo.Group) {
+	router, _ := restapi.NewProductRouter()
 	router.AddRoutes(apiRoutes)
 }
 

@@ -11,17 +11,18 @@ type CompanyService interface {
 }
 
 type CompanyServiceImpl struct {
-	companyRepository *persistance.CompanyRepositoryImpl //TODO test with interface (than you have to omit *)
+	companyRepository persistance.CompanyRepository
 }
 
 /* -- singleton for DI -- */
 
 var companyServiceInstance *CompanyServiceImpl
-var once sync.Once
+var onceForCompantService sync.Once
 
 func ProvideCompanyServiceImpl() *CompanyServiceImpl {
-	once.Do(func() {
-		companyRepository := persistance.ProvideCompanyRepositoryImpl()
+	onceForCompantService.Do(func() {
+		// companyRepository := persistance.ProvideCompanyRepositoryImplGorm()
+		companyRepository := persistance.ProvideCompanyRepositoryImplXorm()
 		companyServiceInstance = &CompanyServiceImpl{companyRepository}
 	})
 	return companyServiceInstance
@@ -33,13 +34,15 @@ func (csImpl *CompanyServiceImpl) CreateCompany(company *domain.Company) error {
 	return csImpl.companyRepository.Insert(company)
 }
 
+func (csImpl *CompanyServiceImpl) UpdateCompany(company *domain.Company) error {
+	return csImpl.companyRepository.InsertOrUpdate(company)
+}
+
+func (csImpl *CompanyServiceImpl) DeleteCompany(id uint) error {
+	return csImpl.companyRepository.Delete(id)
+}
+
 func (csImpl *CompanyServiceImpl) FindAllCompanies() ([]domain.Company, error) {
-	// companiesMock := []domain.Company{
-	// 	{domain.Address{"street-1", "12", "02-744", "wawa", "PL"}, 100, "test-1", "tax-id-test", time.Now()},
-	// 	{domain.Address{}, 101, "test-2", "tax-id-test", time.Now()},
-	// }
-
 	companies, err := csImpl.companyRepository.FindAll()
-
 	return companies, err
 }
