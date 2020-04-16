@@ -5,9 +5,9 @@ import (
 )
 
 type Product struct {
-	ID        uint      `xorm:"pk 'id'" json:"id"`
+	ID        uint      `json:"id"`
 	Name      string    `json:"name"`
 	Price     float32   `json:"price"`
-	CompanyID uint      `xorm:"'company_id'" json:"comapny_id"`
+	CompanyID uint      `json:"comapny_id"`
 	CreatedAt time.Time `json:"-"`
 }

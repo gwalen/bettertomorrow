@@ -5,7 +5,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"time"
-	"bettertomorrow/context/company/restapi"
+	restapiCompany  "bettertomorrow/context/company/restapi"
+	restapiCustomer "bettertomorrow/context/customer/restapi"
 )
 
 func Init() *echo.Echo {
@@ -19,6 +20,8 @@ func Init() *echo.Echo {
 	addUtilRoutes(apiRoutes)
 	addCompanyRoutes(apiRoutes)
 	addProductRoutes(apiRoutes)
+	addCustomerRoutes(apiRoutes)
+	addWalletRoutes(apiRoutes)
 
 	return echoServer
 }
@@ -30,12 +33,22 @@ func addUtilRoutes(apiRoutes *echo.Group) {
 }
 
 func addCompanyRoutes(apiRoutes *echo.Group) {
-	router, _ := restapi.NewCompanyRouter()
+	router, _ := restapiCompany.NewCompanyRouter()
 	router.AddRoutes(apiRoutes)
 }
 
 func addProductRoutes(apiRoutes *echo.Group) {
-	router, _ := restapi.NewProductRouter()
+	router, _ := restapiCompany.NewProductRouter()
+	router.AddRoutes(apiRoutes)
+}
+
+func addCustomerRoutes(apiRoutes *echo.Group) {
+	router := restapiCustomer.NewCustomerRouter()
+	router.AddRoutes(apiRoutes)
+}
+
+func addWalletRoutes(apiRoutes *echo.Group) {
+	router := restapiCustomer.NewWalletRouter()
 	router.AddRoutes(apiRoutes)
 }
 

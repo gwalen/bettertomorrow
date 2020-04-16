@@ -33,9 +33,8 @@ func (cr *CompanyRouter) AddRoutes(apiRoutes *echo.Group) {
 		return c.JSON(http.StatusOK, companies)
 	})
 
-	apiRoutes.GET("/companies/:name", func(c echo.Context) error {
-		companyName := c.Param("name")
-		companiesWithProdcut, err := cr.companyServiceWithProductsService.FindCompanyWithProducts(companyName)
+	apiRoutes.GET("/companies/products", func(c echo.Context) error {
+		companiesWithProdcut, err := cr.companyServiceWithProductsService.FindCompanyWithProducts()
 		if err != nil {
 			return err
 		}

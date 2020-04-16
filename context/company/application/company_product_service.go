@@ -23,7 +23,6 @@ var onceForCompanyProductsService sync.Once
 func ProvideCompanyProductsServiceImpl() *CompanyProductsServiceImpl {
 	onceForCompanyProductsService.Do(func() {
 		companyProductsServiceInstance = &CompanyProductsServiceImpl{
-			// companyRepository: persistance.ProvideCompanyRepositoryImplXorm(),
 			companyRepository: persistance.ProvideCompanyRepositoryImplGorm(),
 			productRepository: persistance.ProvideProductRepositoryImpl(),
 		}
@@ -34,8 +33,8 @@ func ProvideCompanyProductsServiceImpl() *CompanyProductsServiceImpl {
 
  /* ---- */
 
- func (cpsImpl *CompanyProductsServiceImpl) FindCompanyWithProducts(companyName string) ([]domain.CompanyWithProducts, error) {
-	 return cpsImpl.companyRepository.FindWithProducts(companyName)
+ func (cpsImpl *CompanyProductsServiceImpl) FindCompanyWithProducts() ([]domain.Company, error) {
+	 return cpsImpl.companyRepository.FindWithProducts()
  }
 
  

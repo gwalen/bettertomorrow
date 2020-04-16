@@ -21,8 +21,7 @@ var onceForCompantService sync.Once
 
 func ProvideCompanyServiceImpl() *CompanyServiceImpl {
 	onceForCompantService.Do(func() {
-		// companyRepository := persistance.ProvideCompanyRepositoryImplGorm()
-		companyRepository := persistance.ProvideCompanyRepositoryImplXorm()
+		companyRepository := persistance.ProvideCompanyRepositoryImplGorm()
 		companyServiceInstance = &CompanyServiceImpl{companyRepository}
 	})
 	return companyServiceInstance
