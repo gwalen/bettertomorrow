@@ -28,11 +28,11 @@ func DB() *xorm.Engine {
 		dbUrl := generateDbURL(dbConfig)
 		//TODO test onyly
 		fmt.Printf("dbUrl : %v \n", dbUrl)
-		dbCon, err := xorm.NewEngine("mysql", generateDbURL(dbConfig))
+		dbHandle, err := xorm.NewEngine("mysql", generateDbURL(dbConfig))
 		if err != nil {
 			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
 		}
-		db = dbCon
+		db = dbHandle
 		db.ShowSQL(true)
 	})
 

@@ -29,8 +29,8 @@ var onceForCompanyRepositoryGorm sync.Once
 
 func ProvideCompanyRepositoryImplGorm() *CompanyRepositoryImplGorm {
 	onceForCompanyRepositoryGorm.Do(func() {
-		dbConnection := dbgorm.DB()
-		companyRepositoryInstanceGorm = &CompanyRepositoryImplGorm{dbConnection}
+		dbHandle := dbgorm.DB()
+		companyRepositoryInstanceGorm = &CompanyRepositoryImplGorm{dbHandle}
 	})
 	fmt.Printf("INIT GORM REPO %v\n", companyRepositoryInstanceGorm)
 	return companyRepositoryInstanceGorm
@@ -69,7 +69,6 @@ func (crImpl *CompanyRepositoryImplGorm) FindWithProducts() ([]domain.Company, e
 
 	return companies, err
 }
-
 
 //TODO
 func (crImpl *CompanyRepositoryImplGorm) FindWithProductsRawSql() ([]domain.CompanyWithProducts, error) {

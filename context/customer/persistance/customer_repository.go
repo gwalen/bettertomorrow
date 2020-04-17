@@ -15,6 +15,7 @@ type CustomerRepositoryImpl struct {
 type CustomerRepository interface {
 	Insert(customer *domain.Customer) error
 	Update(customer *domain.Customer) error
+	InsertOrUpdate(customer *domain.Customer) error
 	Delete(id uint) error
 	FindAll() ([]domain.Customer, error)
 	FindWithWallets() ([]domain.CustomerWithWallets, error)
@@ -27,8 +28,8 @@ var onceForCustomerRepository sync.Once
 
 func ProvideCustomerRepositoryImpl() *CustomerRepositoryImpl {
 	onceForCustomerRepository.Do(func() {
-		dbConnection := dbxorm.DB()
-		customerRepositoryInstance = &CustomerRepositoryImpl{dbConnection}
+		dbHandle := dbxorm.DB()
+		customerRepositoryInstance = &CustomerRepositoryImpl{dbHandle}
 	})
 	return customerRepositoryInstance
 }
@@ -42,9 +43,15 @@ func (impl *CustomerRepositoryImpl) Insert(customer *domain.Customer) error {
 }
 
 //xorm does not have insert or update
+//TODO: test what happens when you try to update non exsiting row 
 func (impl *CustomerRepositoryImpl) Update(customer *domain.Customer) error {
 	_, err := impl.db.ID(customer.Id).Update(&domain.Customer{})
 	return err
+}
+
+//TODO: how to do it with plain query than?
+func (impl *CustomerRepositoryImpl) InsertOrUpdate(customer *domain.Customer) error {
+	return nil
 }
 
 func (impl *CustomerRepositoryImpl) Delete(id uint) error {

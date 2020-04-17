@@ -5,6 +5,8 @@ type CustomerWithWallets struct {
 	Wallet   []Wallet
 }
 
+//TODO: add sql struct tags (`db`)
+
 type CustomerWithWallet struct {
 	Customer Customer `xorm:"extends"`
 	Wallet   Wallet   `xorm:"extends"`

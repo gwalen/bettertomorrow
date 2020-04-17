@@ -1,11 +1,11 @@
-package dbgorm
+package dbsqlx
 
 import (
 	"fmt"
 	"sync"
-	
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
 type DbConfig struct {
@@ -19,26 +19,28 @@ type DbConfig struct {
 /* -- singleton for DI -- */
 
 var dbConfig *DbConfig
-var db *gorm.DB
+var db *sqlx.DB
 var once sync.Once
 
-func DB() *gorm.DB {
+func DB() *sqlx.DB {
 	once.Do(func() {
 		dbConfig = createDbConfig()
 		dbUrl := generateDbURL(dbConfig)
 		//TODO test onyly
 		fmt.Printf("dbUrl : %v \n", dbUrl)
-		dbCon, err := gorm.Open("mysql", generateDbURL(dbConfig))
+		dbHandle, err := sqlx.Open("mysql", generateDbURL(dbConfig))
 		if err != nil {
 			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
 		}
-		db = dbCon
+		db = dbHandle
+		// db.ShowSQL(true) //TODO: howto in sqlx //https://stackoverflow.com/questions/33041063/how-can-i-log-all-outgoing-sql-statements-from-go-mysql
 	})
 
 	return db
 }
 
 /* ---- */
+
 
 func createDbConfig() *DbConfig {
 	dbConfig = &DbConfig{

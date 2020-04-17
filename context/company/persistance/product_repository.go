@@ -26,14 +26,13 @@ var onceForProductRepository sync.Once
 
 func ProvideProductRepositoryImpl() *ProductRepositoryImpl {
 	onceForProductRepository.Do(func() {
-		dbConnection := dbgorm.DB()
-		productRepositoryInstance = &ProductRepositoryImpl{dbConnection}
+		dbHandle := dbgorm.DB()
+		productRepositoryInstance = &ProductRepositoryImpl{dbHandle}
 	})
 	return productRepositoryInstance
 }
 
 /* ---- */
-
 
 func (prImpl *ProductRepositoryImpl) Insert(product *domain.Product) error {
 	return prImpl.db.Create(product).Error
@@ -47,7 +46,7 @@ func (prImpl *ProductRepositoryImpl) Delete(id uint) error {
 	return prImpl.db.Where("id = ?", id).Delete(domain.Product{}).Error
 }
 
-func (prImpl * ProductRepositoryImpl) FindAll() ([]domain.Product, error) {
+func (prImpl *ProductRepositoryImpl) FindAll() ([]domain.Product, error) {
 	var products []domain.Product
 	error := prImpl.db.Find(&products).Error
 	return products, error

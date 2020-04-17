@@ -26,14 +26,13 @@ var onceForWalletRepository sync.Once
 
 func ProvideWalletRepositoryImpl() *WalletRepositoryImpl {
 	onceForWalletRepository.Do(func() {
-		dbConnection := dbgorm.DB()
-		walletRepositoryInstance = &WalletRepositoryImpl{dbConnection}
+		dbHandle := dbgorm.DB()
+		walletRepositoryInstance = &WalletRepositoryImpl{dbHandle}
 	})
 	return walletRepositoryInstance
 }
 
 /* ---- */
-
 
 func (impl *WalletRepositoryImpl) Insert(wallet *domain.Wallet) error {
 	return impl.db.Create(wallet).Error
@@ -47,7 +46,7 @@ func (impl *WalletRepositoryImpl) Delete(id uint) error {
 	return impl.db.Where("id = ?", id).Delete(domain.Wallet{}).Error
 }
 
-func (impl * WalletRepositoryImpl) FindAll() ([]domain.Wallet, error) {
+func (impl *WalletRepositoryImpl) FindAll() ([]domain.Wallet, error) {
 	var wallets []domain.Wallet
 	error := impl.db.Find(&wallets).Error
 	return wallets, error
