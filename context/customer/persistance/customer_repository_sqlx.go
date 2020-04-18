@@ -57,18 +57,33 @@ func (impl *CustomerRepositoryImplSqlx) Delete(id uint) error {
 //Select featches all rows to memory and populats the slice, for large data sets when paging is needed Queryx
 func (impl *CustomerRepositoryImplSqlx) FindAll() ([]domain.Customer, error) {
 	var customers []domain.Customer
-	err := impl.db.Select(&customers, "SELECT * FROM customers")
+	err := impl.db.Select(&customers, "SELECT customers.* FROM customers")
 	return customers, err
 }
 
+
+//TODO: add to notes super annoying (lot of boiler plate) when doing join and you must alias each field from joined tables
 func (impl *CustomerRepositoryImplSqlx) FindWithWallets() ([]domain.CustomerWithWallets, error) {
 	var customerWithWalletArr []domain.CustomerWithWallet
-
-	// we could use here Select and impl would be shorter but instead for demonstartion purpoe Queryx is used
-	rows, err := impl.db.Queryx("SELECT customers.*, products.* FROM customers JOIN wallets ON wallets.customer_id = customers.id")
+	
+	query := `
+		SELECT 
+			customers.id "customers.id",
+			customers.first_name "customers.first_name",
+			customers.last_name "customers.last_name",
+			customers.created_at "customers.created_at",
+			wallets.id "wallets.id",
+			wallets.currency "wallets.currency",
+			wallets.amount "wallets.amount",
+			wallets.customer_id "wallets.customer_id",
+			wallets.created_at "wallets.created_at"
+		FROM customers JOIN wallets ON wallets.customer_id = customers.id;
+	`
+	rows, err := impl.db.Queryx(query)
 	if err != nil {
 		return nil, err
 	}
+	
 	for rows.Next() {
 		var cs domain.CustomerWithWallet
 		err :=  rows.StructScan(&cs)
@@ -79,7 +94,6 @@ func (impl *CustomerRepositoryImplSqlx) FindWithWallets() ([]domain.CustomerWith
 	}
 
 	customersWithWallets := mapJoinSqlx(customerWithWalletArr)
-
 	return customersWithWallets, err
 }
 

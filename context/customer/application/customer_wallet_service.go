@@ -24,7 +24,8 @@ var onceForCustomerWalletsService sync.Once
 func ProvideCustomerWalletsServiceImpl() *CustomerWalletsServiceImpl {
 	onceForCustomerWalletsService.Do(func() {
 		customerWalletsServiceInstance = &CustomerWalletsServiceImpl{
-			customerRepository: persistance.ProvideCustomerRepositoryImpl(),
+			// customerRepository: persistance.ProvideCustomerRepositoryImpl(),
+			customerRepository: persistance.ProvideCustomerRepositoryImplSqlx(),
 			walletRepository: persistance.ProvideWalletRepositoryImpl(),
 		}
 	})

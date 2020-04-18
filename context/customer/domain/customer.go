@@ -4,11 +4,12 @@ import (
 	"time"
 )
 
+//`db` tag is for sqlx
 type Customer struct {
 	Id        uint      `xorm:"pk autoincr" json:"id"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	CreatedAt time.Time `xorm:"created" json:"-"`
+	FirstName string    `db:"first_name" json:"first_name"`
+	LastName  string    `db:"last_name" json:"last_name"`
+	CreatedAt time.Time `db:"created_at" xorm:"created" json:"-"`
 }
 
 func (c Customer) TableName() string {

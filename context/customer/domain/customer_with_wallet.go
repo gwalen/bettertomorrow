@@ -5,11 +5,10 @@ type CustomerWithWallets struct {
 	Wallet   []Wallet
 }
 
-//TODO: add sql struct tags (`db`)
-
+//`db` tag is for sqlx
 type CustomerWithWallet struct {
-	Customer Customer `xorm:"extends"`
-	Wallet   Wallet   `xorm:"extends"`
+	Customer Customer `xorm:"extends" db:"customers"`
+	Wallet   Wallet   `xorm:"extends" db:"wallets"`
 }
 
 func (CustomerWithWallet) TableName() string {

@@ -21,7 +21,8 @@ var onceForCompantService sync.Once
 
 func ProvideCustomerServiceImpl() *CustomerServiceImpl {
 	onceForCompantService.Do(func() {
-		customerRepository := persistance.ProvideCustomerRepositoryImpl()
+		// customerRepository := persistance.ProvideCustomerRepositoryImpl()
+		customerRepository := persistance.ProvideCustomerRepositoryImplSqlx()
 		customerServiceInstance = &CustomerServiceImpl{customerRepository}
 	})
 	return customerServiceInstance
