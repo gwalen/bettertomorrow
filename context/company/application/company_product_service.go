@@ -1,5 +1,5 @@
 /**
- * Arificialy created struct to have dependecies disturbutted many structs (more than 1:1 (ex.: 1 repository <-> 1 service))
+ * Arificialy created struct to have dependecies disturbutted among many structs (more than 1:1 (ex.: 1 repository <-> 1 service))
  */
 
 package application

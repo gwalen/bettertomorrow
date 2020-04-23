@@ -9,6 +9,6 @@ type Wallet struct {
 	Id         uint      `xorm:"pk" json:"id"`
 	Amount     float32   `json:"amount"`
 	Currency   string    `json:"currency"`
-	CustomerId uint      `db:"customer_id" json:"customer_id"`
-	CreatedAt  time.Time `db:"created_at" json:"-"`
+	CreatedAt  time.Time `json:"-"`
+	CustomerId uint      `json:"customer_id"`
 }

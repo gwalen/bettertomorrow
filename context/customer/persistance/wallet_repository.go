@@ -34,6 +34,8 @@ func ProvideWalletRepositoryImpl() *WalletRepositoryImpl {
 
 /* ---- */
 
+//TODO: it maust be all done in xorm
+
 func (impl *WalletRepositoryImpl) Insert(wallet *domain.Wallet) error {
 	return impl.db.Create(wallet).Error
 }

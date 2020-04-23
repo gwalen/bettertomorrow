@@ -25,7 +25,7 @@ func instantiateCustomerRouter(customerService *application.CustomerServiceImpl,
 
 func (cr *CustomerRouter) AddRoutes(apiRoutes *echo.Group) {
 	apiRoutes.GET("/customers", func(c echo.Context) error {
-		customers, err := cr.customerService.FindAllCompanies()
+		customers, err := cr.customerService.FindAllCustomers()
 		if err != nil {
 			return err
 		}
@@ -46,6 +46,8 @@ func (cr *CustomerRouter) AddRoutes(apiRoutes *echo.Group) {
 		if err != nil {
 			return err
 		}
+		fmt.Printf("xxx %v \n", newCustomer)
+
 		err = cr.customerService.CreateCustomer(newCustomer)
 		if err != nil {
 			return err

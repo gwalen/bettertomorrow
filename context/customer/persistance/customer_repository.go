@@ -38,14 +38,14 @@ func ProvideCustomerRepositoryImpl() *CustomerRepositoryImpl {
 
 func (impl *CustomerRepositoryImpl) Insert(customer *domain.Customer) error {
 	customer.Id = 0 // setting to 0 will trigger auto increment
-	_, err := impl.db.Insert(&domain.Customer{})
+	_, err := impl.db.Insert(customer)
 	return err
 }
 
 //xorm does not have insert or update
 //TODO: test what happens when you try to update non exsiting row 
 func (impl *CustomerRepositoryImpl) Update(customer *domain.Customer) error {
-	_, err := impl.db.ID(customer.Id).Update(&domain.Customer{})
+	_, err := impl.db.ID(customer.Id).Update(customer)
 	return err
 }
 

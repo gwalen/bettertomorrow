@@ -7,6 +7,7 @@ import (
 	"time"
 	restapiCompany  "bettertomorrow/context/company/restapi"
 	restapiCustomer "bettertomorrow/context/customer/restapi"
+	restapiEmployee "bettertomorrow/context/employee/restapi"
 )
 
 func Init() *echo.Echo {
@@ -19,9 +20,8 @@ func Init() *echo.Echo {
 
 	addUtilRoutes(apiRoutes)
 	addCompanyRoutes(apiRoutes)
-	addProductRoutes(apiRoutes)
 	addCustomerRoutes(apiRoutes)
-	addWalletRoutes(apiRoutes)
+	addEmployeeRoutes(apiRoutes)
 
 	return echoServer
 }
@@ -35,6 +35,7 @@ func addUtilRoutes(apiRoutes *echo.Group) {
 func addCompanyRoutes(apiRoutes *echo.Group) {
 	router, _ := restapiCompany.NewCompanyRouter()
 	router.AddRoutes(apiRoutes)
+	addProductRoutes(apiRoutes)
 }
 
 func addProductRoutes(apiRoutes *echo.Group) {
@@ -45,11 +46,23 @@ func addProductRoutes(apiRoutes *echo.Group) {
 func addCustomerRoutes(apiRoutes *echo.Group) {
 	router := restapiCustomer.NewCustomerRouter()
 	router.AddRoutes(apiRoutes)
+	addWalletRoutes(apiRoutes)
 }
 
 func addWalletRoutes(apiRoutes *echo.Group) {
 	router := restapiCustomer.NewWalletRouter()
 	router.AddRoutes(apiRoutes)
+}
+
+func addRoleRoutes(apiRoutes *echo.Group) {
+	router := restapiEmployee.NewRoleRouter()
+	router.AddRoutes(apiRoutes)
+}
+
+func addEmployeeRoutes(apiRoutes *echo.Group) {
+	router := restapiEmployee.NewEmployeeRouter()
+	router.AddRoutes(apiRoutes)
+	addRoleRoutes(apiRoutes)
 }
 
 

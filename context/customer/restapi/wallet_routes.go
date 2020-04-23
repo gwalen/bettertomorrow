@@ -3,6 +3,7 @@ package restapi
 import (
 	"net/http"
 
+	"bettertomorrow/context/customer/domain"
 	"bettertomorrow/context/customer/application"
 
 	"github.com/labstack/echo/v4"
@@ -24,5 +25,14 @@ func (wr *WalletRouter) AddRoutes(apiRoutes *echo.Group) {
 		}
 
 		return c.JSON(http.StatusOK, wallets)
+	})
+
+	apiRoutes.POST("/wallets", func(c echo.Context) error {
+		var newWallet *domain.Wallet
+		if err := c.Bind(newWallet); err != nil {
+			return err
+		} 
+		wr.walletService.CreateWallet(newWallet)	
+		return c.JSON(http.StatusOK, "OK")		
 	})
 }

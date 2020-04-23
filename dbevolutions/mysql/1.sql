@@ -16,7 +16,7 @@ create table if not exists bettertomorrow.products(
 	name VARCHAR(255) not null,
 	price DECIMAL(19, 4),
 	company_id BIGINT NOT NULL,
-	-- created_at DATETIME NOT NULL,
+	created_at DATETIME NOT NULL,
 	PRIMARY KEY (id)
 );
 
