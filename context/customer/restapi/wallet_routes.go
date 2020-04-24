@@ -28,7 +28,7 @@ func (wr *WalletRouter) AddRoutes(apiRoutes *echo.Group) {
 	})
 
 	apiRoutes.POST("/wallets", func(c echo.Context) error {
-		var newWallet *domain.Wallet
+		newWallet := &domain.Wallet{}
 		if err := c.Bind(newWallet); err != nil {
 			return err
 		} 

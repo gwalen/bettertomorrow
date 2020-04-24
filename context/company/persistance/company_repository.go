@@ -3,7 +3,6 @@ package persistance
 import (
 	"bettertomorrow/common/dbgorm"
 	"bettertomorrow/context/company/domain"
-	"fmt"
 	"sync"
 
 	"github.com/jinzhu/gorm"
@@ -32,7 +31,6 @@ func ProvideCompanyRepositoryImplGorm() *CompanyRepositoryImplGorm {
 		dbHandle := dbgorm.DB()
 		companyRepositoryInstanceGorm = &CompanyRepositoryImplGorm{dbHandle}
 	})
-	fmt.Printf("INIT GORM REPO %v\n", companyRepositoryInstanceGorm)
 	return companyRepositoryInstanceGorm
 }
 

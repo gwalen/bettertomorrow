@@ -11,7 +11,7 @@ type Customer struct {
 	CreatedAt time.Time `xorm:"created" json:"-"`
 }
 
-func (c Customer) TableName() string {
+func (Customer) TableName() string {
 	return "customers"
 }
 

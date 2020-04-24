@@ -25,9 +25,6 @@ var once sync.Once
 func DB() *gorm.DB {
 	once.Do(func() {
 		dbConfig = createDbConfig()
-		dbUrl := generateDbURL(dbConfig)
-		//TODO test onyly
-		fmt.Printf("dbUrl : %v \n", dbUrl)
 		dbHandle, err := gorm.Open("mysql", generateDbURL(dbConfig))
 		if err != nil {
 			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))

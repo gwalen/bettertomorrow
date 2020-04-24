@@ -12,3 +12,7 @@ type Wallet struct {
 	CreatedAt  time.Time `json:"-"`
 	CustomerId uint      `json:"customer_id"`
 }
+
+func (Wallet) TableName() string {
+	return "wallets"
+}

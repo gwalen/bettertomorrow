@@ -1,11 +1,11 @@
 package persistance
 
 import (
-	"bettertomorrow/common/dbgorm"
+	"bettertomorrow/common/dbxorm"
 	"bettertomorrow/context/customer/domain"
 	"sync"
 
-	"github.com/jinzhu/gorm"
+	"xorm.io/xorm"
 )
 
 type WalletRepository interface {
@@ -16,7 +16,7 @@ type WalletRepository interface {
 }
 
 type WalletRepositoryImpl struct {
-	db *gorm.DB
+	db *xorm.Engine
 }
 
 /* -- singleton for DI -- */
@@ -26,7 +26,7 @@ var onceForWalletRepository sync.Once
 
 func ProvideWalletRepositoryImpl() *WalletRepositoryImpl {
 	onceForWalletRepository.Do(func() {
-		dbHandle := dbgorm.DB()
+		dbHandle := dbxorm.DB()
 		walletRepositoryInstance = &WalletRepositoryImpl{dbHandle}
 	})
 	return walletRepositoryInstance
@@ -34,22 +34,23 @@ func ProvideWalletRepositoryImpl() *WalletRepositoryImpl {
 
 /* ---- */
 
-//TODO: it maust be all done in xorm
-
 func (impl *WalletRepositoryImpl) Insert(wallet *domain.Wallet) error {
-	return impl.db.Create(wallet).Error
+	_, err := impl.db.Insert(wallet)
+	return err
 }
 
+//TODO: how to do it with plain query / xorm does not have a insertOrUpdate implemented
 func (impl *WalletRepositoryImpl) InsertOrUpdate(wallet *domain.Wallet) error {
-	return impl.db.Save(wallet).Error
+	return nil
 }
 
 func (impl *WalletRepositoryImpl) Delete(id uint) error {
-	return impl.db.Where("id = ?", id).Delete(domain.Wallet{}).Error
+	_, err := impl.db.ID(id).Delete(&domain.Wallet{})
+	return err
 }
 
 func (impl *WalletRepositoryImpl) FindAll() ([]domain.Wallet, error) {
 	var wallets []domain.Wallet
-	error := impl.db.Find(&wallets).Error
-	return wallets, error
+	err := impl.db.Find(&wallets)
+	return wallets, err
 }

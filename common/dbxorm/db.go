@@ -25,9 +25,6 @@ var once sync.Once
 func DB() *xorm.Engine {
 	once.Do(func() {
 		dbConfig = createDbConfig()
-		dbUrl := generateDbURL(dbConfig)
-		//TODO test onyly
-		fmt.Printf("dbUrl : %v \n", dbUrl)
 		dbHandle, err := xorm.NewEngine("mysql", generateDbURL(dbConfig))
 		if err != nil {
 			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
