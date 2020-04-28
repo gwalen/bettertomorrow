@@ -3,6 +3,7 @@ package persistance
 import (
 	"bettertomorrow/common/dbxorm"
 	"bettertomorrow/context/customer/domain"
+	"github.com/pkg/errors"
 	"sync"
 
 	"xorm.io/xorm"
@@ -38,7 +39,8 @@ func ProvideCustomerRepositoryImpl() *CustomerRepositoryImpl {
 
 func (impl *CustomerRepositoryImpl) Insert(customer *domain.Customer) error {
 	customer.Id = 0 // setting to 0 will trigger auto increment
-	_, err := impl.db.Insert(customer)
+	// _, err := impl.db.Insert(customer)
+	err := errors.New("test error add customer")
 	return err
 }
 
