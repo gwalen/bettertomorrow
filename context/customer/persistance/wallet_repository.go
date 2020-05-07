@@ -3,7 +3,6 @@ package persistance
 import (
 	"bettertomorrow/common/dbxorm"
 	"bettertomorrow/context/customer/domain"
-	"github.com/pkg/errors"
 	"sync"
 
 	"xorm.io/xorm"
@@ -52,7 +51,6 @@ func (impl *WalletRepositoryImpl) Delete(id uint) error {
 
 func (impl *WalletRepositoryImpl) FindAll() ([]domain.Wallet, error) {
 	var wallets []domain.Wallet
-	// err := impl.db.Find(&wallets)
-	err := errors.New("test error find wallets")
+	err := impl.db.Find(&wallets)
 	return wallets, err
 }

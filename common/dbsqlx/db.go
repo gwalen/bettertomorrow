@@ -30,7 +30,6 @@ func DB() *sqlx.DB {
 			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
 		}
 		db = dbHandle
-		// db.ShowSQL(true) //TODO: howto in sqlx //https://stackoverflow.com/questions/33041063/how-can-i-log-all-outgoing-sql-statements-from-go-mysql
 	})
 
 	return db

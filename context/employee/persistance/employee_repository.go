@@ -37,7 +37,7 @@ func ProvideEmployeeRepositoryImpl() *EmployeeRepositoryImpl {
 
 /* ---- */
 
-//TODO: use Exec and return error and pass it (dont use MustExec with panic) ?
+//TODO: use Exec and return error and pass it (dont use MustExec with panic)
 
 func (impl *EmployeeRepositoryImpl) Insert(employee *domain.Employee) {
 	employeeRaw := employee.ToEmployeeRaw()
