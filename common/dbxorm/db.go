@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
 	"xorm.io/xorm"
 )
 
@@ -27,7 +28,7 @@ func DB() *xorm.Engine {
 		dbConfig = createDbConfig()
 		dbHandle, err := xorm.NewEngine("mysql", generateDbURL(dbConfig))
 		if err != nil {
-			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
+			fmt.Printf("%v \n", fmt.Errorf("Xorm error in connectDatabase(): %v", err))
 		}
 		db = dbHandle
 		db.ShowSQL(true)
@@ -41,11 +42,11 @@ func DB() *xorm.Engine {
 
 func createDbConfig() *DbConfig {
 	dbConfig = &DbConfig{
-		port:   3306,
-		host:   "127.0.0.1",
-		user:   "gw",
-		pass:   "gw",
-		dbName: "bettertomorrow",
+		port:   viper.GetInt("db.port"),
+		host:   viper.GetString("db.host"),
+		user:   viper.GetString("db.user"),
+		pass:   viper.GetString("db.pass"),
+		dbName: viper.GetString("db.name"),
 	}
 
 	return dbConfig

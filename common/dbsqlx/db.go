@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"github.com/spf13/viper"
 )
 
 type DbConfig struct {
@@ -27,7 +28,7 @@ func DB() *sqlx.DB {
 		dbConfig = createDbConfig()
 		dbHandle, err := sqlx.Open("mysql", generateDbURL(dbConfig))
 		if err != nil {
-			fmt.Printf("%v \n", fmt.Errorf("error in connectDatabase(): %v", err))
+			fmt.Printf("%v \n", fmt.Errorf("Sqlx error in connectDatabase(): %v", err))
 		}
 		db = dbHandle
 	})
@@ -40,11 +41,11 @@ func DB() *sqlx.DB {
 
 func createDbConfig() *DbConfig {
 	dbConfig = &DbConfig{
-		port:   3306,
-		host:   "127.0.0.1",
-		user:   "gw",
-		pass:   "gw",
-		dbName: "bettertomorrow",
+		port:   viper.GetInt("db.port"),
+		host:   viper.GetString("db.host"),
+		user:   viper.GetString("db.user"),
+		pass:   viper.GetString("db.pass"),
+		dbName: viper.GetString("db.name"),
 	}
 
 	return dbConfig

@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var logWallet = logger.ProvideLogger("zero", "dev")
+var logWallet = logger.ProvideLogger()
 
 type WalletRouter struct {
 	walletService application.WalletService

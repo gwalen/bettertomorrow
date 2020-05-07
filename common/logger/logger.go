@@ -1,13 +1,13 @@
 package logger
 
 import (
+	"fmt"
 	"path/filepath"
 	"runtime"
+
+	"github.com/spf13/viper"
 )
 
-var loggerFacade LoggerFacade
-
-//TODO: use config from file
 const (
 	zapLogger  = "zap"
 	zeroLogger = "zero"
@@ -15,6 +15,9 @@ const (
 	loggerTypeDev = "dev"
 	loggerTypeProd = "prod"
 )
+
+var loggerVendor = viper.GetString("logger.vendor")
+var loggerType = viper.GetString("logger.type")
 
 
 type Logger interface {
@@ -24,14 +27,8 @@ type Logger interface {
 	Debug(msg string)
 }
 
-type LoggerFacade struct {
-	logger Logger
-}
-
-
 // question is weather zap/zero performs better with just one instance (singleton) or with many
-// TODO: use config file
-func ProvideLogger(loggerVendor string, loggerType string) Logger {
+func ProvideLogger() Logger {
 	switch loggerVendor {
 	case zapLogger:
 		zapInstance := LoggerZap{}

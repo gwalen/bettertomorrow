@@ -12,7 +12,7 @@ import (
 	"bettertomorrow/context/customer/domain"
 )
 
-var logCustomer = logger.ProvideLogger("zero", "dev")
+var logCustomer = logger.ProvideLogger()
 
 type CustomerRouter struct {
 	customerService                   *application.CustomerServiceImpl
