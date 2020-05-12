@@ -7,11 +7,8 @@ import (
 )
 
 func Worker(wg *sync.WaitGroup, intput chan interface{}, output chan interface{}, workerFunc func(interface{}) interface{}) {
-	fmt.Printf("worker: waiting for value \n")
 	for value := range intput {
-		fmt.Printf("worker value from input : %v \n", value)
 		result := workerFunc(value)
-		fmt.Printf("worker result: %v, for input : %v \n", result, value)
 		output <- result
 	} 
 	wg.Done()
@@ -36,9 +33,7 @@ func StartWorkerPool(
 
 func ReadInput(input chan interface{}, readerFunc func() []interface{}) {
 	inputData := readerFunc()
-	fmt.Printf("read input  data slice: : %v \n", inputData)
 	for _, inputValue := range inputData {
-		fmt.Printf("read input data iteration : %v \n", inputValue)
 		input <- inputValue
 	}
 	close(input)
@@ -54,7 +49,7 @@ func WriteOutput(output chan interface{}, errorChan chan string, resultWriterFun
 
 func HandleResourcesOnError(log logger.Logger, input chan interface{}, output chan interface{}, errorChan chan string) {
 	for executionResult := range errorChan {
-		if executionResult != "done" { // error in sub routine, close resuources and panic
+		if executionResult != "done" { // error in sub routine, close resuources
 			SafeClose(log, input)	
 			SafeClose(log, output)
 			log.Warn(fmt.Sprintf("Error in subroutine, release resources: closing channels; error: %v", executionResult))
