@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/labstack/echo/v4"
 	"bettertomorrow/common/logger"
+
+	"github.com/labstack/echo/v4"
 
 	"bettertomorrow/context/customer/application"
 	"bettertomorrow/context/customer/domain"
@@ -18,7 +19,6 @@ type CustomerRouter struct {
 	customerService                   *application.CustomerServiceImpl
 	customerServiceWithWalletsService *application.CustomerWalletsServiceImpl
 }
-
 
 //TODO: add logger fgacade so I can chnage ubderlying implementation (zap, or zerologger)
 //TODO: pass interface
@@ -93,5 +93,20 @@ func (cr *CustomerRouter) AddRoutes(apiRoutes *echo.Group) {
 		}
 
 		return c.JSON(http.StatusOK, "OK")
+	})
+
+	apiRoutes.GET("/customers/wallets/aggregate", func(c echo.Context) error {
+		defer func() {
+			if r := recover(); r != nil {
+				logCustomer.Info(fmt.Sprintf("recover from : %v \n", r))
+			}
+		}()
+
+		aggregatedSavings, err := cr.customerServiceWithWalletsService.AggregateCustomerSavings()
+		if err != nil {
+			return err
+		}
+		fmt.Println("XXXXX")
+		return c.JSON(http.StatusOK, aggregatedSavings)
 	})
 }

@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"path/filepath"
 	"runtime"
 
