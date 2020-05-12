@@ -10,8 +10,8 @@ import (
 	"bettertomorrow/context/customer/domain"
 	"bettertomorrow/context/customer/persistance"
 
-	// "errors"
-	"fmt"
+	"errors"
+	// "fmt"
 	"sync"
 )
 
@@ -58,57 +58,6 @@ func aggregateSavings(customerWallets domain.CustomerWithWallets) domain.Aggrega
 	return domain.AggregatedWallet{currencies, totoalUnits}
 }
 
-func worker(wg *sync.WaitGroup, intput chan interface{}, output chan interface{}, workerFunc func(interface{}) interface{}) {
-	fmt.Printf("worker: waiting for value \n")
-	for value := range intput {
-		fmt.Printf("worker value from input : %v \n", value)
-		result := workerFunc(value)
-		fmt.Printf("worker result: %v, for input : %v \n", result, value)
-		output <- result
-	} 
-	wg.Done()
-}
-
-func startWorkerPool(poolSize int, input chan interface{}, output chan interface{}, errorChan chan string, workerFunc func(interface{}) interface{}) {
-	var wg sync.WaitGroup
-	for i := 0; i < poolSize; i++ {
-		wg.Add(1)
-		SafeGoWithErrorChan(logCws, func(){ worker(&wg, input, output, workerFunc) }, errorChan)	
-	}
-	wg.Wait() 
-	SafeClose(logCws, output)
-}
-
-func readInput(input chan interface{}, readerFunc func() []interface{}) {
-	inputData := readerFunc()
-	fmt.Printf("read input  data slice: : %v \n", inputData)
-	for _, inputValue := range inputData {
-		fmt.Printf("read input data iteration : %v \n", inputValue)
-		input <- inputValue
-	}
-	close(input)
-}
-
-func writeOutput(output chan interface{}, errorChan chan string, resultWriterFunc func(interface{})) {
-	for resultData := range output {
-		resultWriterFunc(resultData)
-	}
-	errorChan <- "done"
-	close(errorChan)	
-}
-
-func handleResourcesOnError(input chan interface{}, output chan interface{}, errorChan chan string) {
-	for executionResult := range errorChan {
-		if executionResult != "done" { // error in sub routine, close resuources and panic
-			SafeClose(logCws, input)	
-			SafeClose(logCws, output)
-			logCws.Warn(fmt.Sprintf("Error in subroutine - closing channels, error: %v", executionResult))
-		} else {
-			logCws.Info("All jobs finsed")
-		}
-	}
-}
-
 func (cpsImpl *CustomerWalletsServiceImpl) AggregateCustomerSavings() ([]domain.AggregatedWallet, error) {
 	input := make(chan interface{}, workerNumber) 
 	output := make(chan interface{}, workerNumber) 
@@ -137,12 +86,10 @@ func (cpsImpl *CustomerWalletsServiceImpl) AggregateCustomerSavings() ([]domain.
 		results = append(results, resultData.(domain.AggregatedWallet))
 	}	
 
-	SafeGoWithErrorChan(logCws, func(){ readInput(input, readerFunc) }, errorChan)
-	SafeGoWithErrorChan(logCws, func(){ startWorkerPool(workerNumber, input, output, errorChan, workerFunc) }, errorChan)
-	SafeGo(logCws, func(){ handleResourcesOnError(input, output, errorChan) })
-	writeOutput(output, errorChan, resultWriterFunc)
+	SafeGoWithErrorChan(logCws, func(){ ReadInput(input, readerFunc) }, errorChan)
+	SafeGoWithErrorChan(logCws, func(){ StartWorkerPool(logCws, workerNumber, input, output, errorChan, workerFunc) }, errorChan)
+	SafeGo(logCws, func(){ HandleResourcesOnError(logCws, input, output, errorChan) })
+	WriteOutput(output, errorChan, resultWriterFunc)
 
 	return results, nil
 } 
-
- 
