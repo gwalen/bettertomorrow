@@ -43,6 +43,13 @@ func ProvideLogger() Logger {
 	return nil
 }
 
+func ProvideDefaultLogger() Logger {
+	logger := LoggerZero{}
+	logger.InitZeroLogger()
+	logger.ForDev()
+	return &logger
+}
+
 func callerForLogger() string {
 	_, filePath, _, ok := runtime.Caller(3)
 	dir, file := filepath.Split(filePath)

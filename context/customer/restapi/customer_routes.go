@@ -106,7 +106,6 @@ func (cr *CustomerRouter) AddRoutes(apiRoutes *echo.Group) {
 		if err != nil {
 			return err
 		}
-		fmt.Println("XXXXX")
 		return c.JSON(http.StatusOK, aggregatedSavings)
 	})
 }

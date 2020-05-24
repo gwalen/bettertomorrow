@@ -19,6 +19,7 @@ type EmployeeRouter struct {
 }
 
 //TODO: pass interface
+//TODO: remove fmt add logger
 func instantiateEmployeeRouter(
 	employeeService application.EmployeeService,
 	employeeServiceWithRolesService application.EmployeeRolesService,

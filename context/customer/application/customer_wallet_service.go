@@ -16,6 +16,7 @@ import (
 )
 
 var logCws = logger.ProvideLogger()
+var workerNumber = 4
 
 //TODO: add interface ?
 type CustomerWalletsServiceImpl struct {
@@ -41,21 +42,18 @@ func ProvideCustomerWalletsServiceImpl() *CustomerWalletsServiceImpl {
 
  /* ---- */
 
- func (cpsImpl *CustomerWalletsServiceImpl) FindCustomerWithWallets() ([]domain.CustomerWithWallets, error) {
-	 return cpsImpl.customerRepository.FindWithWallets()
- }
-
-
-var workerNumber = 4
+func (cpsImpl *CustomerWalletsServiceImpl) FindCustomerWithWallets() ([]domain.CustomerWithWallets, error) {
+	return cpsImpl.customerRepository.FindWithWallets()
+}
 
 func aggregateSavings(customerWallets domain.CustomerWithWallets) domain.AggregatedWallet {
 	var totoalUnits float64 
 	var currencies []string	
 	for _, wallet := range customerWallets.Wallet {
 		totoalUnits += float64(wallet.Amount)
-		currencies = append(currencies, wallet.Currency)
+		currencies = append(currencies, wallet.Currency) // TODO: add sort 
 	}
-	return domain.AggregatedWallet{currencies, totoalUnits}
+	return domain.AggregatedWallet{customerWallets.Customer.Id, currencies, totoalUnits}
 }
 
 func (cpsImpl *CustomerWalletsServiceImpl) AggregateCustomerSavings() ([]domain.AggregatedWallet, error) {

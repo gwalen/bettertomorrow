@@ -20,6 +20,7 @@ type CompanyRouter struct {
 
 //TODO: how to brake lines with go , ste max line lenght
 //TODO: pass interface
+//TODO: remove fmt add logger
 func instantiateCompanyRouter(companyService *application.CompanyServiceImpl, companyServiceWithProductsService *application.CompanyProductsServiceImpl) *CompanyRouter {
 	return &CompanyRouter{companyService, companyServiceWithProductsService}
 }

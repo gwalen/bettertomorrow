@@ -6,6 +6,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/google/go-cmp v0.4.1
 	github.com/google/wire v0.4.0
 	github.com/jinzhu/gorm v1.9.12
 	github.com/jmoiron/sqlx v1.2.0
