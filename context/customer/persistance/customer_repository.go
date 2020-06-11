@@ -51,7 +51,7 @@ func (impl *CustomerRepositoryImpl) Update(customer *domain.Customer) error {
 	return err
 }
 
-//TODO: how to do it with plain query than?
+//TODO: do it with plain query
 func (impl *CustomerRepositoryImpl) InsertOrUpdate(customer *domain.Customer) error {
 	return nil
 }
@@ -71,7 +71,6 @@ func (impl *CustomerRepositoryImpl) FindWithWallets() ([]domain.CustomerWithWall
 	var customerWithWalletArr []domain.CustomerWithWallet
 
 	err := impl.db.Join("INNER", "wallets", "wallets.customer_id = customers.id").Find(&customerWithWalletArr)
-	//TODO: test plain sql query
 
 	customersWithWallets := mapJoin(customerWithWalletArr)
 

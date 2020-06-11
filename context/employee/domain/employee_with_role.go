@@ -5,7 +5,6 @@ type EmployeeWithRoles struct {
 	Role     []Role
 }
 
-//TODO: remove db tags
 type EmployeeWithRole struct {
 	Employee Employee `db:"employees"`
 	Role     Role     `db:"roles"`

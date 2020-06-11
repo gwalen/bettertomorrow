@@ -18,7 +18,6 @@ import (
 var logCws = logger.ProvideLogger()
 var workerNumber = 4
 
-//TODO: add interface ?
 type CustomerWalletsServiceImpl struct {
 	 customerRepository persistance.CustomerRepository
 	 walletRepository persistance.WalletRepository
@@ -51,7 +50,7 @@ func aggregateSavings(customerWallets domain.CustomerWithWallets) domain.Aggrega
 	var currencies []string	
 	for _, wallet := range customerWallets.Wallet {
 		totoalUnits += float64(wallet.Amount)
-		currencies = append(currencies, wallet.Currency) // TODO: add sort 
+		currencies = append(currencies, wallet.Currency)
 	}
 	return domain.AggregatedWallet{customerWallets.Customer.Id, currencies, totoalUnits}
 }

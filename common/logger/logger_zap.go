@@ -37,8 +37,6 @@ func (lz *LoggerZap) ForProd() {
 	lz.caller = callerForLogger()
 }
 
-//TODO: add to notes that zao is harder to manage stack trace in particular beacuse of not being able (or not in the obvius documented way) to log stack from error
-//      besides docs are much worse than in case of zero logger
 func (lz *LoggerZap) Error(msg string, err error) {
 	lz.logger.Sugar().With("caller", lz.caller).Errorf("%+v \n", err)
 }

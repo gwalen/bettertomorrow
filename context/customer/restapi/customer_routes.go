@@ -20,7 +20,6 @@ type CustomerRouter struct {
 	customerServiceWithWalletsService *application.CustomerWalletsServiceImpl
 }
 
-//TODO: add logger fgacade so I can chnage ubderlying implementation (zap, or zerologger)
 //TODO: pass interface
 func instantiateCustomerRouter(customerService *application.CustomerServiceImpl, customerServiceWithWalletsService *application.CustomerWalletsServiceImpl) *CustomerRouter {
 	return &CustomerRouter{customerService, customerServiceWithWalletsService}

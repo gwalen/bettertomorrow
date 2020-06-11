@@ -19,7 +19,6 @@ func NewEmployeeRouter() *EmployeeRouter {
 }
 
 func NewRoleRouter() *RoleRouter {
-	//TODO: any way to handle errors ?
 	wire.Build(
 		application.ProvideRoleServiceImpl,
 		wire.Bind(new(application.RoleService), new(*application.RoleServiceImpl)),

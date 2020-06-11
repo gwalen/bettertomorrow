@@ -18,9 +18,7 @@ type CompanyRouter struct {
 	companyServiceWithProductsService *application.CompanyProductsServiceImpl
 }
 
-//TODO: how to brake lines with go , ste max line lenght
 //TODO: pass interface
-//TODO: remove fmt add logger
 func instantiateCompanyRouter(companyService *application.CompanyServiceImpl, companyServiceWithProductsService *application.CompanyProductsServiceImpl) *CompanyRouter {
 	return &CompanyRouter{companyService, companyServiceWithProductsService}
 }
@@ -47,15 +45,13 @@ func (cr *CompanyRouter) AddRoutes(apiRoutes *echo.Group) {
 
 		err := c.Bind(newCompany)
 		if err != nil {
-			// fmt.Errorf("error reading company data from request: %v", err) //TODO: test it
 			return err
 		}
+		//TODO: add logger remove fmt
 		fmt.Printf("new company: %v \n", newCompany)
 
 		err = cr.companyService.CreateCompany(newCompany)
-		//TODO: one method for this kind of error handling like in go-tools project
 		if err != nil {
-			// fmt.Errorf("error saving company: %v , error: %v", newCompany, err) //TODO: test it
 			return err
 		}
 
@@ -83,7 +79,6 @@ func (cr *CompanyRouter) AddRoutes(apiRoutes *echo.Group) {
 		idStr := c.Param("id")
 		id, err := strconv.ParseUint(idStr, 10, 32)
 		if err != nil {
-			// fmt.Printf("%+v\n", errors.Errorf("error parsing id: %v , error: %v", idStr, err))
 			return err
 		}
 		fmt.Printf("delete company with id: %v \n", id)

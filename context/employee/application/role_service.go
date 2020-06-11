@@ -25,7 +25,6 @@ var onceForRoleService sync.Once
 func ProvideRoleServiceImpl() *RoleServiceImpl {
 	onceForRoleService.Do(func() {
 		var roleRepository persistance.RoleRepository
-		//TODO: unify to as in employee service and leave only one exmaple of this alternative in company service
 		roleRepositoryImpl := persistance.ProvideRoleRepositoryImpl()
 		roleRepository = roleRepositoryImpl
 		roleServiceInstance = &RoleServiceImpl{roleRepository}

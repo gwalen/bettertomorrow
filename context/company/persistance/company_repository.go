@@ -55,8 +55,6 @@ func (crImpl *CompanyRepositoryImplGorm) Delete(id uint) error {
 
 func (crImpl *CompanyRepositoryImplGorm) FindAll() ([]domain.Company, error) {
 	var companies []domain.Company
-	// TODO:
-	// err := crImpl.db.Find(companies).Error //interstingly error is reported in seversl different go routines althought there was just one call ?
 	err := crImpl.db.Find(&companies).Error // Products field in Company struct will be nil becuse we only pull companies without associations
 	return companies, err
 }
@@ -68,7 +66,6 @@ func (crImpl *CompanyRepositoryImplGorm) FindWithProducts() ([]domain.Company, e
 	return companies, err
 }
 
-//TODO
 func (crImpl *CompanyRepositoryImplGorm) FindWithProductsRawSql() ([]domain.CompanyWithProducts, error) {
 	var companies []domain.Company
 	err := crImpl.db.Preload("Products").Table("companies").Joins("join products on products.company_id = companies.id").Find(&companies).Error

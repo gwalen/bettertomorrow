@@ -17,7 +17,6 @@ func NewCustomerRouter() *CustomerRouter {
 }
 
 func NewWalletRouter() *WalletRouter {
-	//TODO: any way to handle errors ?
 	wire.Build(
 		application.ProvideWalletServiceImpl,
 		wire.Bind(new(application.WalletService), new(*application.WalletServiceImpl)),

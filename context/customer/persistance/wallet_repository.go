@@ -39,7 +39,7 @@ func (impl *WalletRepositoryImpl) Insert(wallet *domain.Wallet) error {
 	return err
 }
 
-//TODO: how to do it with plain query / xorm does not have a insertOrUpdate implemented
+//TODO: do it with plain query
 func (impl *WalletRepositoryImpl) InsertOrUpdate(wallet *domain.Wallet) error {
 	return nil
 }

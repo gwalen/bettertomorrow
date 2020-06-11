@@ -12,9 +12,9 @@ type AggregatedWallet struct {
 }
 
 /**
- * Equals methof to comapre AggrefatedWallet objects  
+ * Equals method to compare AggrefatedWallet objects  
  *
- * Temporary arrays has to be created for comapring slices (Slices must to sroted, without changing the base object)
+ * Temporary arrays has to be created for comparing slices (Slices must to sorted, without changing the base object)
  */
 func (aw AggregatedWallet) Equal(other AggregatedWallet) bool {
 	otherSortedCurrencies := make([]string, len(other.Currencies))

@@ -16,7 +16,6 @@ func NewCompanyRouter() (*CompanyRouter, error) {
 	return &CompanyRouter{}, nil
 }
 
-//TODO: errors handling ?
 func NewProductRouter() (*ProductRouter, error) {
 	wire.Build(
 		application.ProvideProductServiceImpl,
